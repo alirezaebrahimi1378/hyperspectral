@@ -17,7 +17,8 @@ This repository contains two distinct but related projects focused on hyperspect
 - ### project1 :
    Contains scripts and notebooks for downloading and preprocessing hyperspectral data from USGS.
    the data used for this project came from hyperion satellite with 240 bands . after processing and removing noise bands we have an image with 198 bands.here you can see the single band look and the same location in google earth image view.
-
+   <div style="text-align: center;">
+   
    ![something went wrong!](images/pr1_1.png)
 
    high-resolution image of the region
