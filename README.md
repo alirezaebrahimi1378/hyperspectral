@@ -95,6 +95,35 @@ This repository contains two distinct but related projects focused on hyperspect
 
    ![something went wrong!](images/pr2_scat_kpca.png)
 
+   **Nystrom Kernel PCA** :
+
+   Nystrom Kernel Principal Component Analysis (NystromKPCA) is a variant of Kernel PCA designed to handle large datasets efficiently. It approximates the kernel matrix using a subset of the data, making it computationally feasible for large-scale applications.this method works in the following steps:
+
+   
+   - **Choose a Kernel**:Select a kernel function (e.g., Gaussian, polynomial) to map the original data into a higher-dimensional space.
+
+   - **Select a Subset**:Randomly select a subset of the data points to approximate the kernel matrix. This subset should be representative of the entire dataset.
+   
+   - **Compute Kernel Matrix for Subset**:Calculate the kernel matrix for the selected subset of data points. This smaller kernel matrix approximates the relationships within the subset.
+
+   - **Compute Cross-Kernel Matrix**:Calculate the cross-kernel matrix between the subset and the entire dataset. This matrix captures the relationships between the subset and the rest of the data.
+
+   - **Approximate Full Kernel Matrix**:Use the subset kernel matrix and the cross-kernel matrix to approximate the full kernel matrix for the entire dataset.
+
+   - **Eigenvalue and Eigenvector Computation**:Perform eigenvalue decomposition on the approximate kernel matrix to find the principal components in the higher-dimensional space.
+
+   - **Select Principal Components**:Choose the top eigenvectors based on their eigenvalues, representing the directions of maximum variance in the high-dimensional space.
+
+   - **Transform Data**:Project the original data onto the selected principal components using the kernel function to obtain the reduced dataset.
+
+   here are features extracted from nkpca method :
+
+   ![something went wrong!](images/pr2_nkpca.png)
+
+   the scatter-plot for four classes in first 3 feature extracted from kpca method is shown bellow : 
+
+   ![something went wrong!](images/pr2_scat_nkpca.png)
+
    **ISOMAP** : 
 
    Isomap (Isometric Mapping) is a nonlinear dimensionality reduction technique that aims to preserve the geodesic distances between data points, effectively capturing the underlying manifold structure.
@@ -149,7 +178,8 @@ This repository contains two distinct but related projects focused on hyperspect
    | PCA                        | 85%      |
    | IPCA                       | 83%      |
    | KPCA                       | 87%      |
-   | LDA                        | 90%      |
+   | NKPCA                      | 92%      |
+   | LDA                        | 96%      |
    | Isomap                     | 84%      |
 
 

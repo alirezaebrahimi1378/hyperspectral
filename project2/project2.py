@@ -13,9 +13,11 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score
 import random
 import constants as C
-
+from nystrompca import NystromKPCA
 
 # _____ gets a multi-band image and returns it as uint8 image
+
+
 def UINT8(Data):
     shape = Data.shape
     for i in range(shape[2]):
@@ -162,6 +164,18 @@ class Processor:
         )
         return kpca_img
 
+    def NKPCA(self):
+        n_components = C.n_components
+        nkpca = NystromKPCA(n_components=n_components,
+                            m_subset=30, kernel=C.kernel_type)
+        nkpca_img = nkpca.fit_transform(self.flattened_img)
+        plot_reduced_img(reduced_data=nkpca_img,
+                         method="kpca", shape=self.shape)
+        scatter_plot(
+            reduced_image=nkpca_img, label=self.flattened_lbl, method="nystrom PCA"
+        )
+        return nkpca_img
+
     # _____ applying method of isomap for dimension reduction
     def ISOMAP(self):
         n_components = 25
@@ -216,14 +230,16 @@ class Processor:
             accuracy = {}
             self.ins_dim(calc_dim=False)
             reduced_img_pca = self.PCA()
-            reduced_img_ipca = self.IPCA()
             reduced_img_kpca = self.KPCA()
+            reduced_img_nkpca = self.NKPCA()
+            reduced_img_ipca = self.IPCA()
             reduced_img_iso = self.ISOMAP()
             reduced_img_lda = self.LDA()
 
             accuracy['PCA'] = self.KNN(reduced_image=reduced_img_pca)
             accuracy['iPCA'] = self.KNN(reduced_image=reduced_img_ipca)
             accuracy['kPCA'] = self.KNN(reduced_image=reduced_img_kpca)
+            accuracy['nkPCA'] = self.KNN(reduced_image=reduced_img_nkpca)
             accuracy['isomap'] = self.KNN(reduced_image=reduced_img_iso)
             accuracy['LDA'] = self.KNN(reduced_image=reduced_img_lda)
 
