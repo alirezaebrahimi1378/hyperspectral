@@ -5,6 +5,7 @@
    - [**projects**](#projects)
      - [project 1: aqusation of hyperspectral data](#project1)
      - [project 2: comparison of methods of feature extraction](#project2)
+     - [project 3: anomaly detection](#project3)
    - [**installation**](#installation)
 ___
 ## introduction
@@ -14,7 +15,7 @@ This repository contains two distinct but related projects focused on hyperspect
 
 ## projects
 
-- ### project1 :
+- ### **project1** :
    Contains scripts and notebooks for downloading and preprocessing hyperspectral data from USGS.
    the data used for this project came from hyperion satellite with 240 bands . after processing and removing noise bands we have an image with 198 bands.here you can see the single band look and the same location in google earth image view.
    <div style="text-align: center;">
@@ -31,7 +32,7 @@ This repository contains two distinct but related projects focused on hyperspect
 
    ground truth which is made in 4 classes of urban area , tree , grassland and water-body
 
-- ### Project2 :  
+- ### **Project2** :  
    In this project we calculated the intrinsic dimension for hyperion image with 198 bands using ipca method .considering the region of our image **25** feature was the best number of features. after that we applied different methods of feature extraction including PCA(principal component analysis) , KPCA( kernel principal component analysis) , IPCA(incremental principal component analysis) , ISOMAP and LDA(linear discriminant analysis) . 
    here is the resulting features extracted and the scatter plots for each method.
    
@@ -95,35 +96,6 @@ This repository contains two distinct but related projects focused on hyperspect
 
    ![something went wrong!](images/pr2_scat_kpca.png)
 
-   **Nystrom Kernel PCA** :
-
-   Nystrom Kernel Principal Component Analysis (NystromKPCA) is a variant of Kernel PCA designed to handle large datasets efficiently. It approximates the kernel matrix using a subset of the data, making it computationally feasible for large-scale applications.this method works in the following steps:
-
-   
-   - **Choose a Kernel**:Select a kernel function (e.g., Gaussian, polynomial) to map the original data into a higher-dimensional space.
-
-   - **Select a Subset**:Randomly select a subset of the data points to approximate the kernel matrix. This subset should be representative of the entire dataset.
-   
-   - **Compute Kernel Matrix for Subset**:Calculate the kernel matrix for the selected subset of data points. This smaller kernel matrix approximates the relationships within the subset.
-
-   - **Compute Cross-Kernel Matrix**:Calculate the cross-kernel matrix between the subset and the entire dataset. This matrix captures the relationships between the subset and the rest of the data.
-
-   - **Approximate Full Kernel Matrix**:Use the subset kernel matrix and the cross-kernel matrix to approximate the full kernel matrix for the entire dataset.
-
-   - **Eigenvalue and Eigenvector Computation**:Perform eigenvalue decomposition on the approximate kernel matrix to find the principal components in the higher-dimensional space.
-
-   - **Select Principal Components**:Choose the top eigenvectors based on their eigenvalues, representing the directions of maximum variance in the high-dimensional space.
-
-   - **Transform Data**:Project the original data onto the selected principal components using the kernel function to obtain the reduced dataset.
-
-   here are features extracted from nkpca method :
-
-   ![something went wrong!](images/pr2_nkpca.png)
-
-   the scatter-plot for four classes in first 3 feature extracted from kpca method is shown bellow : 
-
-   ![something went wrong!](images/pr2_scat_nkpca.png)
-
    **ISOMAP** : 
 
    Isomap (Isometric Mapping) is a nonlinear dimensionality reduction technique that aims to preserve the geodesic distances between data points, effectively capturing the underlying manifold structure.
@@ -178,8 +150,7 @@ This repository contains two distinct but related projects focused on hyperspect
    | PCA                        | 85%      |
    | IPCA                       | 83%      |
    | KPCA                       | 87%      |
-   | NKPCA                      | 92%      |
-   | LDA                        | 96%      |
+   | LDA                        | 90%      |
    | Isomap                     | 84%      |
 
 
@@ -195,6 +166,44 @@ This repository contains two distinct but related projects focused on hyperspect
 
    Overall, LDA's ability to incorporate class information and focus on maximizing class separability gives it an edge in classification tasks, resulting in higher accuracy compared to PCA, IPCA, KPCA, and Isomap.
 
+- ### **project3** :
+
+   Anomaly detection is a technique used to identify unusual patterns that do not conform to expected behavior. In the context of hyperspectral images, anomalies are pixels or regions that differ significantly from the majority of the data. Detecting anomalies is crucial for various applications such as environmental monitoring, military surveillance, and mineral exploration.
+
+   Hyperspectral imaging captures a wide spectrum of light for each pixel in an image, providing detailed information about the materials present. This high-dimensional data allows for the detection of subtle anomalies that may not be visible in standard RGB images.here we tried three different methods for detecting anomalies from a hyperspectral image :
+
+   1. **Global RX Anomaly Detection**
+
+      The Reed-Xiaoli (RX) detector is a widely used method for anomaly detection in hyperspectral images. It calculates the Mahalanobis distance of each pixel's spectrum from the global mean of the image, considering the covariance of the entire image. This approach identifies pixels that deviate significantly from the overall statistical properties of the image, flagging them as anomalies.
+
+   2. **Local RX Anomaly Detection**
+
+      The Local RX detector applies the RX method within a moving window centered on each pixel. This local approach can better detect anomalies in heterogeneous scenes by considering local statistics rather than global ones. By focusing on a smaller, localized area, the Local RX detector can identify anomalies that might be missed when only global statistics are considered.
+
+   3. **Combined KMeans and Mahalanobis Distance**
+
+      This method combines clustering with KMeans and distance-based anomaly detection using the Mahalanobis distance. The process involves two main steps:
+      - **Clustering**: Pixels are first clustered using the KMeans algorithm. This step groups pixels with similar spectral characteristics together, forming clusters.
+      - **Mahalanobis Distance**: Within each cluster, the Mahalanobis distance is calculated for each pixel from the cluster centroid. Pixels with high Mahalanobis distances are flagged as anomalies. This distance metric takes into account the variance within the cluster, providing a robust measure of how unusual each pixel is compared to the rest of the cluster.
+
+   here are the results for three methodes of anomaly detection :
+
+   ![something went wrong!](images/pr3_prob.png)
+
+   probability image foor each method
+
+   ![something went wrong!](images/pr3_map.png)
+
+   anomaly map
+
+   ![something went wrong!](images/pr3_hist.png)
+
+   histogram of probability
+
+   ## Conclusion
+
+   Anomaly detection in hyperspectral images is a powerful tool for identifying unusual patterns and features that may be critical for various applications. The methods discussed—Global RX, Local RX, and the combined KMeans and Mahalanobis Distance—each offer unique advantages and can be selected based on the specific requirements of the analysis. By understanding and applying these techniques, one can effectively detect and analyze anomalies in hyperspectral data, unlocking valuable insights and information.
+   
 ## Installation
 
 To run the projects in this repository, you need to have Python installed along with some specific packages. You can install the required packages using the following command:

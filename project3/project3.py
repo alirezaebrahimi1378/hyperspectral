@@ -30,17 +30,43 @@ def normalize(data):
 def plot_results(rx_global, rx_local, combined):
     plt.figure(figsize=(18, 6))
     plt.subplot(1, 3, 1)
-    plt.imshow(rx_global, cmap='hot', interpolation='nearest')
+    plt.imshow(rx_global, cmap='hot')
     plt.title('Global RX Anomaly Detection')
     plt.colorbar()
 
     plt.subplot(1, 3, 2)
-    plt.imshow(rx_local, cmap='hot', interpolation='nearest')
+    plt.imshow(rx_local, cmap='hot')
     plt.title('Local RX Anomaly Detection')
     plt.colorbar()
 
     plt.subplot(1, 3, 3)
-    plt.imshow(combined, cmap='hot', interpolation='nearest')
+    plt.imshow(combined, cmap='hot')
+    plt.title('Combined KMeans & Mahalanobis')
+    plt.colorbar()
+
+    plt.show()
+
+
+def plot_anomaly_map(rx_global, rx_local, combined):
+    plt.figure(figsize=(18, 6))
+    plt.subplot(1, 3, 1)
+    rx_global[rx_global < 0.8] = 0
+    rx_global[rx_global > 0] = 1
+    plt.imshow(rx_global, cmap='gray')
+    plt.title('Global RX Anomaly Detection')
+    plt.colorbar()
+
+    plt.subplot(1, 3, 2)
+    rx_local[rx_local < 0.8] = 0
+    rx_local[rx_local > 0] = 1
+    plt.imshow(rx_local, cmap='gray')
+    plt.title('Local RX Anomaly Detection')
+    plt.colorbar()
+
+    plt.subplot(1, 3, 3)
+    combined[combined < 0.8] = 0
+    combined[combined > 0] = 1
+    plt.imshow(combined, cmap='gray')
     plt.title('Combined KMeans & Mahalanobis')
     plt.colorbar()
 
@@ -157,6 +183,8 @@ class processor:
             combined = self.kmeans_mahalanobis()
             plot_results(rx_global=rx_global, rx_local=rx_local,
                          combined=combined)
+            plot_anomaly_map(rx_global=rx_global, rx_local=rx_local,
+                             combined=combined)
             plot_hist(rx_global=rx_global, rx_local=rx_local,
                       combined=combined)
 
